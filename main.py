@@ -1,7 +1,7 @@
 import discord
 client = discord.Bot(intents=discord.Intents.all())
 
-@client.command()
+@client.command(description="通話の録音を開始します")
 async def start_record(ctx:discord.ApplicationContext):
     try:
         vChannel = await ctx.author.voice.channel.connect()
@@ -19,12 +19,12 @@ async def finished_callback(sink:discord.sinks.MP3Sink, ctx:discord.ApplicationC
     ]
 
     files = [discord.File(audio.file, f"{user_id}.{sink.encoding}") for user_id, audio in sink.audio_data.items()]
-    await ctx.channel.send(f"録音を終了しました。音声ファイルを送信しました。{', '.join(recorded_users)}.", files=files)
+    await ctx.channel.send(f"録音を終了しました。音声ファイルを送信しました。{', '.join(recordedUsers)}.", files=files)
 
-@client.command()
+@client.command(description="通話の録音を終了します")
 async def stop_record(ctx:discord.ApplicationContext):
     ctx.voice_client.stop_recording()
     await ctx.respond("録音を終了します。")
     await ctx.voice_client.disconnect()
 
-client.run(YOUR_TOKEN_HERE)
+client.run("YOUR_TOKEN_HERE")
